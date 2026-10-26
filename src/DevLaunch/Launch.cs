@@ -14,6 +14,7 @@ internal static class Menus
 
     private static Hook? launchModeHook;
     private static Hook? menuHook;
+    private static Hook? screenModeHook;
     private static Hook? bootHook;
 
     // Only auto-host or join once. Quitting back to the menu shouldn't start another game.
@@ -26,6 +27,10 @@ internal static class Menus
         // Start is private in the game. The publicized reference only makes it look public.
         const BindingFlags hidden = BindingFlags.Instance | BindingFlags.NonPublic;
         menuHook = Detour(typeof(MenuManager).GetMethod(nameof(MenuManager.Start), hidden), StartGame);
+        // The game reapplies its saved screen mode on load and whenever the player changes it, which undoes the tiling.
+        screenModeHook = Detour(
+            typeof(IngamePlayerSettings).GetMethod(nameof(IngamePlayerSettings.SetFullscreenMode), hidden),
+            KeepTiled);
         // After the launch mode, the game plays its logo animation and sometimes a cold-open cinematic before the menu.
         bootHook = Detour(typeof(InitializeGame).GetMethod("Awake", hidden), SkipBootUp);
     }
@@ -47,6 +52,12 @@ internal static class Menus
             return null;
         }
         return new Hook(method, to);
+    }
+
+    private static void KeepTiled(Action<IngamePlayerSettings, int> orig, IngamePlayerSettings self, int value)
+    {
+        orig(self, value);
+        Tile.Apply();
     }
 
     private static void PickLaunchMode(Action<PreInitSceneScript> orig, PreInitSceneScript self)

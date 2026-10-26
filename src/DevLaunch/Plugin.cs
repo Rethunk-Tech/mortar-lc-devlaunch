@@ -18,7 +18,7 @@ public class Plugin : BaseUnityPlugin
         Badge.Bind(Config);
         Launch = Launch.From(Environment.GetCommandLineArgs());
         Log.LogInfo($"{MyPluginInfo.Name} {MyPluginInfo.Version} loaded");
-        if (Launch.Online == null && !Launch.Host && Launch.JoinAddress == null)
+        if (Launch.Online == null && !Launch.Host && Launch.JoinAddress == null && Launch.Tile == null)
         {
             return;
         }
@@ -28,7 +28,6 @@ public class Plugin : BaseUnityPlugin
     }
 }
 
-// Command line: --online or --lan picks the launch mode, --host hosts a lobby and --join <address> joins a LAN game.
 internal sealed class Launch
 {
     public bool? Online { get; private set; }
@@ -36,6 +35,8 @@ internal sealed class Launch
     public bool Host { get; private set; }
 
     public string? JoinAddress { get; private set; }
+
+    public (int Index, int Count)? Tile { get; private set; }
 
     public static Launch From(string[] args)
     {
@@ -55,6 +56,14 @@ internal sealed class Launch
                     break;
                 case "--join" when i + 1 < args.Length:
                     launch.JoinAddress = args[++i];
+                    break;
+                case "--tile" when i + 1 < args.Length:
+                    string[] parts = args[++i].Split('/');
+                    if (parts.Length == 2 && int.TryParse(parts[0], out int n) && int.TryParse(parts[1], out int count) &&
+                        count > 0 && n >= 1 && n <= count)
+                    {
+                        launch.Tile = (n - 1, count);
+                    }
                     break;
             }
         }

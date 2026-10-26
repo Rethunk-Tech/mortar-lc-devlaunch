@@ -47,6 +47,7 @@ internal sealed class Badge : MonoBehaviour
         var holder = new GameObject(nameof(DevLaunch)) { hideFlags = HideFlags.HideAndDontSave };
         DontDestroyOnLoad(holder);
         holder.AddComponent<Badge>();
+        Tile.Add(holder);
     }
 
     private void Awake() => inTitle.SettingChanged += (_, _) => state = long.MinValue;
