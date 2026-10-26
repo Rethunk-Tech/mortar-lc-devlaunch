@@ -15,6 +15,7 @@ public class Plugin : BaseUnityPlugin
     private void Awake()
     {
         Log = Logger;
+        Badge.Bind(Config);
         Launch = Launch.From(Environment.GetCommandLineArgs());
         Log.LogInfo($"{MyPluginInfo.Name} {MyPluginInfo.Version} loaded");
         if (Launch.Online == null && !Launch.Host && Launch.JoinAddress == null)
@@ -23,6 +24,7 @@ public class Plugin : BaseUnityPlugin
         }
         Splash.Stop();
         Menus.Hook();
+        Badge.Show();
     }
 }
 
