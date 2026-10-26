@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>tech.rethunk.mortar.DevLaunch</AssemblyName>
+    <AssemblyTitle>DevLaunch</AssemblyTitle>
+    <RootNamespace>DevLaunch</RootNamespace>
+    <RepositoryUrl>https://github.com/Rethunk-Tech/mortar-lc-devlaunch</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsThunderstorePackable>true</IsThunderstorePackable>
+    <ThunderstoreName>DevLaunch</ThunderstoreName>
+    <ThunderstoreDescription>Starts test copies of the game straight into a LAN game for mod development: one hosts, the others join.</ThunderstoreDescription>
+    <ThunderstoreCommunities>lethal-company</ThunderstoreCommunities>
+    <ThunderstoreCategories>tools;misc</ThunderstoreCategories>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ModFile Include="$(TargetPath)" Destination="plugins/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ThunderstorePackageFile Include="$(SolutionRoot)README.md" />
+    <ThunderstorePackageFile Include="$(SolutionRoot)CHANGELOG.md" />
+    <ThunderstorePackageFile Include="$(SolutionRoot)icon.png" />
+    <ThunderstorePackageFile Include="$(SolutionRoot)LICENSE" />
+    <ThunderstoreDependency Include="BepInEx-BepInExPack" Version="5.4.2305" />
+  </ItemGroup>
+</Project>

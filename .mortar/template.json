@@ -1,0 +1,14 @@
+{
+  "template": "Rethunk-Tech/mortar-bepinex5-template",
+  "ref": "main",
+  "name": "DevLaunch",
+  "values": {
+    "description": "Starts test copies of the game straight into a LAN game for mod development: one hosts, the others join.",
+    "modAuthor": "Rethunk Tech",
+    "team": "Mortar",
+    "idPrefix": "tech.rethunk.mortar",
+    "repositoryUrl": "https://github.com/Rethunk-Tech/mortar-lc-devlaunch",
+    "audience": "everyone",
+    "categories": "tools|misc"
+  }
+}
