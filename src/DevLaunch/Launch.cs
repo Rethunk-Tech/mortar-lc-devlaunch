@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Reflection;
+using System.Threading;
+using ES3Internal;
 using MonoMod.RuntimeDetour;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -11,11 +14,13 @@ namespace DevLaunch;
 internal static class Menus
 {
     private const int JoinAttempts = 10;
+    private const int SaveAttempts = 40;
 
     private static Hook? launchModeHook;
     private static Hook? menuHook;
     private static Hook? screenModeHook;
     private static Hook? bootHook;
+    private static Hook? saveHook;
 
     // Only auto-host or join once. Quitting back to the menu shouldn't start another game.
     private static bool started;
@@ -33,6 +38,24 @@ internal static class Menus
             KeepTiled);
         // After the launch mode, the game plays its logo animation and sometimes a cold-open cinematic before the menu.
         bootHook = Detour(typeof(InitializeGame).GetMethod("Awake", hidden), SkipBootUp);
+        saveHook = Detour(typeof(ES3Stream).GetMethod(nameof(ES3Stream.CreateStream), [typeof(ES3Settings), typeof(ES3FileMode)]), SharedSave);
+    }
+
+    // The copies share one save folder, so one can open the settings file while another is writing it. Waiting a
+    // moment and trying again beats the menu never loading.
+    private static Stream SharedSave(Func<ES3Settings, ES3FileMode, Stream> orig, ES3Settings settings, ES3FileMode mode)
+    {
+        for (int attempt = 1; ; attempt++)
+        {
+            try
+            {
+                return orig(settings, mode);
+            }
+            catch (IOException e) when (attempt < SaveAttempts && e.Message.Contains("Sharing violation"))
+            {
+                Thread.Sleep(50);
+            }
+        }
     }
 
     private static void SkipBootUp(Action<InitializeGame> orig, InitializeGame self)
