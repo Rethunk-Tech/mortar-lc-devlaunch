@@ -3,12 +3,14 @@
   "ref": "main",
   "name": "DevLaunch",
   "values": {
-    "description": "Starts test copies of the game straight into a LAN game for mod development: one hosts, the others join.",
-    "modAuthor": "Rethunk Tech",
-    "team": "Mortar",
-    "idPrefix": "tech.rethunk.mortar",
-    "repositoryUrl": "https://github.com/Rethunk-Tech/mortar-lc-devlaunch",
     "audience": "everyone",
-    "categories": "tools|misc"
-  }
+    "categories": "tools|misc",
+    "description": "Starts test copies of the game straight into a LAN game for mod development: one hosts, the others join.",
+    "idPrefix": "tech.rethunk.mortar",
+    "modAuthor": "Rethunk Tech",
+    "repositoryUrl": "https://github.com/Rethunk-Tech/mortar-lc-devlaunch",
+    "team": "Mortar"
+  },
+  "game": "lethal-company",
+  "templateIcon": "e24326af3db8cbd550135b19a8d7b724dd8e186d1b98642084467742d2700506"
 }
