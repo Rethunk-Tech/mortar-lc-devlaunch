@@ -90,8 +90,8 @@ internal sealed class Badge : MonoBehaviour
         style.alignment = top
             ? left ? TextAnchor.UpperLeft : TextAnchor.UpperRight
             : left ? TextAnchor.LowerLeft : TextAnchor.LowerRight;
-        float width = px * 12;
-        float height = px * 2;
+        float width = px * 12f;
+        float height = px * 2f;
         float x = left ? px : Screen.width - px - width;
         float y = top ? px / 2f : Screen.height - px / 2f - height;
         GUI.Label(new Rect(x, y, width, height), shown, style);
