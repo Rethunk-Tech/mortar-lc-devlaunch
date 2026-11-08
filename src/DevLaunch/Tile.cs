@@ -13,7 +13,11 @@ internal sealed class Tile : MonoBehaviour
 
     private static Tile? instance;
 
-    public static void Add(GameObject holder) => holder.AddComponent<Tile>();
+    public static void Add(GameObject holder)
+    {
+        instance = holder.AddComponent<Tile>();
+        Apply();
+    }
 
     public static void Apply()
     {
@@ -22,12 +26,6 @@ internal sealed class Tile : MonoBehaviour
             instance.StopAllCoroutines();
             instance.StartCoroutine(Place(tile.Index, tile.Count));
         }
-    }
-
-    private void Awake()
-    {
-        instance = this;
-        Apply();
     }
 
     private static IEnumerator Place(int index, int count)
