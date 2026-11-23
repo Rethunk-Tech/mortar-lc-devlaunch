@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- The corner label sizes itself with decimal maths, so the Host or Client N badge scales smoothly on every screen size.
+- Dependabot's NuGet update checks no longer fail trying to reach Thunderstore.
+
 ## 0.1.1
 
 - The host no longer sticks at the LAN warning when a client copy is writing the game's settings file at the same
